@@ -34,7 +34,7 @@ open class TablePerformanceTest {
 
     @Benchmark
     fun get() {
-        gamePlayer.joined
+        game.joinedPlayers
     }
 
 }
