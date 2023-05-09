@@ -9,18 +9,19 @@ import org.openjdk.jmh.annotations.State
 import table.*
 import java.util.concurrent.TimeUnit
 
-data class GamePlayer(override val table: RowTable) : TableVisitor<RowTable> {
-    var joined: Game by TableDelegate
-}
-
-data class Game(override val table: RowTable) : TableVisitor<RowTable> {
-    val joinedPlayers: MutableList<GamePlayer> by lazy { ArrayList() }
-}
-
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 open class TablePerformanceTest {
+
+    data class GamePlayer(override val table: RowTable) : TableVisitor<RowTable> {
+        var joined: Game by TableDelegate
+    }
+
+    data class Game(override val table: RowTable) : TableVisitor<RowTable> {
+        val joinedPlayers: MutableList<GamePlayer> by lazy { ArrayList() }
+    }
+
     val Games = tableFacade(CollectionTable(), ::Game)
     val GamePlayers = tableFacade(CollectionTable(), ::GamePlayer)
     val gamePlayer = GamePlayers["Jimmy"]
@@ -29,6 +30,11 @@ open class TablePerformanceTest {
     @Benchmark
     fun set() {
         gamePlayer.joined = game
+    }
+
+    @Benchmark
+    fun get() {
+        gamePlayer.joined
     }
 
 }
