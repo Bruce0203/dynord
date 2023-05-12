@@ -1,5 +1,8 @@
 package table
 
+typealias CollectionTable = NodeTable<RowTable>
+typealias RowTable = NodeTable<Any>
+
 open class TableFacade<T : MutableTable<*>, V : TableVisitor<T>>(
     private val table: MutableTable<T>,
     private val newValue: (T) -> V

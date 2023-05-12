@@ -3,15 +3,6 @@ package table
 import util.FastElementNotFoundException
 import kotlin.reflect.KProperty
 
-typealias CollectionTable = NodeTable<RowTable>
-typealias RowTable = NodeTable<Any>
-
-interface TableVisitor<T> {
-
-    val table: T
-
-}
-
 object TableDelegate {
     @Suppress("UNCHECKED_CAST")
     operator fun <T : TableVisitor<out MutableTable<out Any>>, R : Any> getValue(thisRef: T, property: KProperty<*>): R {
