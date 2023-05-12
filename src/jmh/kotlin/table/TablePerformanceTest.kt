@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Suppress("unused")
 open class TablePerformanceTest {
 
