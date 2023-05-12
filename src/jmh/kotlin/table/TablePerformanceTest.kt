@@ -22,19 +22,19 @@ open class TablePerformanceTest {
         val joinedPlayers: MutableList<GamePlayer> by lazy { ArrayList() }
     }
 
-    val Games = tableFacade(CollectionTable(), ::Game)
-    val GamePlayers = tableFacade(CollectionTable(), ::GamePlayer)
-    val gamePlayer = GamePlayers["Jimmy"]
-    val game = Games["Game1"]
+    private val Games = CollectionTable() facade::Game
+    private val GamePlayers = CollectionTable() facade::GamePlayer
 
     @Benchmark
-    fun set() {
-        gamePlayer.joined = game
+    fun genVisitorAndReferProps() {
+        val gamePlayer = GamePlayers["Jimmy"]
+        gamePlayer.joined
     }
 
     @Benchmark
-    fun get() {
-        game.joinedPlayers
+    fun genVisitorAndReferLazyProps() {
+        val games = Games["Jimmy"]
+        games.joinedPlayers
     }
 
 }

@@ -3,7 +3,7 @@ package table
 import util.FastElementNotFoundException
 import kotlin.reflect.KProperty
 
-interface TableVisitor<T : MutableTablePresenter<out Any>> {
+interface TableVisitor<T> {
 
     val table: T
 

@@ -6,19 +6,23 @@ import util.newSafeList
 import util.newSafeMap
 import java.util.concurrent.CopyOnWriteArrayList
 
-open class MutableTable<E : Any> : MutableTablePresenter<E> {
+typealias ComponentTable = NodeTable<CollectionTable>
+typealias CollectionTable = NodeTable<RowTable>
+typealias RowTable = NodeTable<Any>
+
+open class MutableTable<E : Any>(val defaultGet: () -> E? = { null }) : MutableTablePresenter<E> {
     protected val elements: ConcurrentLinkedHashMap<Any, E> = newSafeMap()
 
     override operator fun set(key: Any, newValue: E) { elements[key] = newValue }
 
-    override fun get(key: Any): E = getOrNull(key)?: throw FastElementNotFoundException
+    override fun get(key: Any): E = getOrNull(key)?: defaultGet()?: throw FastElementNotFoundException
 
     override fun getOrNull(key: Any): E? = elements[key]
 
     override fun getAll(): Collection<E> = elements.values
 }
 
-open class NodeTable<E : Any> : MutableTable<E>(), InheritableTablePresenter<E> {
+open class NodeTable<E : Any>(defaultGet: () -> E? = { null }) : MutableTable<E>(defaultGet), InheritableTablePresenter<E> {
     private val children: CopyOnWriteArrayList<InheritableTablePresenter<E>> = newSafeList()
 
     override fun getFromOnlyNode(key: Any): E? = elements[key]
