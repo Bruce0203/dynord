@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Suppress("unused")
 open class TablePerformanceTest {
 
     data class GamePlayer(override val table: RowTable) : TableVisitor<RowTable> {
@@ -22,18 +23,18 @@ open class TablePerformanceTest {
         val joinedPlayers: MutableList<GamePlayer> by lazy { ArrayList() }
     }
 
-    private val Games = CollectionTable() facade::Game
-    private val GamePlayers = CollectionTable() facade::GamePlayer
+    private val games = CollectionTable() facade::Game
+    private val gamePlayers = CollectionTable() facade::GamePlayer
 
     @Benchmark
     fun genVisitorAndReferProps() {
-        val gamePlayer = GamePlayers["Jimmy"]
+        val gamePlayer = gamePlayers["Jimmy"]
         gamePlayer.joined
     }
 
     @Benchmark
     fun genVisitorAndReferLazyProps() {
-        val games = Games["Jimmy"]
+        val games = games["Jimmy"]
         games.joinedPlayers
     }
 
