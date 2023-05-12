@@ -22,11 +22,11 @@ open class TablePerformanceTest {
     }
 
     data class Game(override val table: RowTable) : TableVisitor<RowTable> {
-        var joinedPlayers: MutableList<GamePlayer> by lazy { ArrayList() }
+        var joinedPlayers: MutableList<GamePlayer> by tableLazy { ArrayList() }
     }
 
-    private val games = CollectionTable() facade::Game
-    private val gamePlayers = CollectionTable() facade::GamePlayer
+    private val games = CollectionTable(::NodeTable)facade::Game
+    private val gamePlayers = CollectionTable(::NodeTable)facade::GamePlayer
 
     private val game = games["Jimmy"]
     private val emptyList = ArrayList<GamePlayer>()

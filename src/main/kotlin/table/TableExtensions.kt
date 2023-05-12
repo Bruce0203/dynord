@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package table
 
 infix fun <T1, T2 : Table<T3>, T3> T2.to(code: (T2) -> T1): T1 = code(this)
@@ -11,6 +12,6 @@ fun <T : TableVisitor<InheritableTable<T2>>, T2> T.addChild(other: T) = table.ad
 infix fun <T : MutableTable<*>, V : TableVisitor<T>>
         MutableTable<T>.facade(newValue: (T) -> V) = TableFacade(this, newValue)
 
-fun <R : Any> lazy(code: () -> R) = LazyTableDelegate(code)
+fun <R : Any> tableLazy(code: () -> R) = LazyTableDelegate(code)
 
 infix fun <T, R> TableVisitor<T>.to(code: (T) -> R): R = code(table)
