@@ -7,11 +7,10 @@ infix fun <T> InheritableTable<T>.child(table: InheritableTable<T>) = addChild(t
 
 fun <T> InheritableTable<T>.children(vararg table: InheritableTable<T>) = table.forEach(::addChild)
 
-fun <T : TableVisitor<InheritableTable<T2>>, T2> T.addChild(other: T) = table.addChild(other.table)
-
-infix fun <T : MutableTable<*>, V : TableVisitor<T>>
-        MutableTable<T>.facade(newValue: (T) -> V) = TableFacade(this, newValue)
-
-fun <R : Any> tableLazy(code: () -> R) = LazyTableDelegate(code)
+infix fun <T : Any> MutableTable<T>.lazy(code: () -> T) =
+    LazyTableDelegate(this, code)
 
 infix fun <T, R> TableVisitor<T>.to(code: (T) -> R): R = code(table)
+
+infix fun <A : MutableTable<T>, T : MutableTable<*>, V : TableVisitor<T>> A.facade(code: (T) -> V) =
+    MutableTableFacade(this, code) { it.table }

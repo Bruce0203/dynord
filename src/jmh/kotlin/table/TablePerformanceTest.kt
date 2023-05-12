@@ -18,11 +18,11 @@ import kotlin.collections.ArrayList
 open class TablePerformanceTest {
 
     data class GamePlayer(override val table: RowTable) : TableVisitor<RowTable> {
-        var joined: Game by TableDelegate
+        var joined: Game by table
     }
 
     data class Game(override val table: RowTable) : TableVisitor<RowTable> {
-        var joinedPlayers: MutableList<GamePlayer> by tableLazy { ArrayList() }
+        var joinedPlayers: MutableList<GamePlayer> by table lazy { ArrayList<GamePlayer>() }
     }
 
     private val games = CollectionTable(::NodeTable)facade::Game

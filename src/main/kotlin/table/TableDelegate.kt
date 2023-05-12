@@ -1,28 +1,23 @@
 package table
 
-import util.FastElementNotFoundException
 import kotlin.reflect.KProperty
 
-object TableDelegate {
-    @Suppress("UNCHECKED_CAST")
-    operator fun <T : TableVisitor<out MutableTable<out Any>>, R : Any> getValue(thisRef: T, property: KProperty<*>): R {
-        return thisRef.table[property.hashCode()] as? R?: throw FastElementNotFoundException
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    operator fun <T : TableVisitor<out MutableTable<T2>>, R: Any, T2 : Any> setValue(thisRef: T, property: KProperty<*>, value: R) {
-        thisRef.table[property.hashCode()] = value as T2
-    }
+@Suppress("UNCHECKED_CAST")
+operator fun <R : Any> Table<*>.getValue(thisRef: Any?, property: KProperty<*>): R {
+    return this[property.hashCode()] as R
 }
 
-class LazyTableDelegate<R : Any>(private val code: () -> R) {
-    @Suppress("UNCHECKED_CAST")
-    operator fun <T2 : MutableTable<T3>, T3 : Any> getValue(thisRef: TableVisitor<T2>, property: KProperty<*>): R {
-        return (thisRef.table.getOrNull(property)?: code.invoke().also { thisRef.table[property] = it as T3 }) as R
-    }
+operator fun <R> MutableTable<R>.setValue(thisRef: Any?, property: KProperty<*>, value: R) {
+    this[property.hashCode()] = value
+}
 
+class LazyTableDelegate<T : Any>(
+    private val table: MutableTable<T>,
+    private val code: () -> T
+) : MutableTable<T> by table {
     @Suppress("UNCHECKED_CAST")
-    operator fun <T2 : MutableTable<T3>, T3 : Any> setValue(thisRef: TableVisitor<T2>, property: KProperty<*>, value: R) {
-        thisRef.table[property] = value as T3
+    operator fun <R> getValue(thisRef: Any?, property: KProperty<*>): R {
+        val getOrNull = getOrNull(property.hashCode())
+        return (getOrNull ?: code.invoke().also { this[property] = it }) as R
     }
 }
