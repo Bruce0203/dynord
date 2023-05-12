@@ -29,7 +29,7 @@ open class TablePerformanceTest {
     private val gamePlayers = CollectionTable() facade::GamePlayer
 
     private val game = games["Jimmy"]
-    val emptyList = ArrayList<GamePlayer>()
+    private val emptyList = ArrayList<GamePlayer>()
 
     @Benchmark
     fun genVisitorAndReferProps() {
