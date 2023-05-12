@@ -1,12 +1,9 @@
 package table
 
-infix fun <T : MutableTablePresenter<*>, V : TableVisitor<T>> MutableTablePresenter<T>.facade(newValue: (T) -> V)
-= TableFacade(this, newValue)
-
-open class TableFacade<T : MutableTablePresenter<*>, V : TableVisitor<T>>(
-    private val table: MutableTablePresenter<T>,
+open class TableFacade<T : MutableTable<*>, V : TableVisitor<T>>(
+    private val table: MutableTable<T>,
     private val newValue: (T) -> V
-)  : MutableTablePresenter<V> {
+)  : MutableTable<V> {
 
     override fun get(key: Any): V = table[key].run(newValue)
 
