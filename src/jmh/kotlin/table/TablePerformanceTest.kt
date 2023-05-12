@@ -1,18 +1,13 @@
 package table
 
-import org.openjdk.jmh.annotations.Benchmark
-import org.openjdk.jmh.annotations.BenchmarkMode
-import org.openjdk.jmh.annotations.Mode
-import org.openjdk.jmh.annotations.OutputTimeUnit
-import org.openjdk.jmh.annotations.Scope
-import org.openjdk.jmh.annotations.State
+import org.openjdk.jmh.annotations.*
 import table.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.AverageTime)
+@BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Suppress("unused")
 open class TablePerformanceTest {
@@ -25,12 +20,22 @@ open class TablePerformanceTest {
         var joinedPlayers: MutableList<GamePlayer> by table lazy { ArrayList<GamePlayer>() }
     }
 
-    private val games = CollectionTable(::NodeTable)facade::Game
-    private val gamePlayers = CollectionTable(::NodeTable)facade::GamePlayer
+    private val games = CollectionTable() dummy::RowTable facade::Game
+    private val gamePlayers = CollectionTable() dummy::RowTable facade::GamePlayer
 
+    init {
+        gamePlayers["Jimmy"] = GamePlayer(RowTable())
+        games["Jimmy"] = Game(RowTable())
+    }
     private val game = games["Jimmy"]
     private val emptyList = ArrayList<GamePlayer>()
 
+
+    private infix fun <T : MutableTable<E>, E> T.dummy(block: () -> E) = apply {
+        repeat(100) { (set(UUID.randomUUID(), block())) }
+    }
+
+    @Fork(value = 1, warmups = 1)
     @Benchmark
     fun genVisitorAndReferProps() {
         val gamePlayer = gamePlayers["Jimmy"]
@@ -38,6 +43,7 @@ open class TablePerformanceTest {
         gamePlayer.joined
     }
 
+    @Fork(value = 1, warmups = 1)
     @Benchmark
     fun genVisitorAndReferLazyProps() {
         val games = games["Jimmy"]
@@ -46,3 +52,4 @@ open class TablePerformanceTest {
     }
 
 }
+
