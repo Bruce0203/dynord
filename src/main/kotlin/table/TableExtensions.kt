@@ -7,6 +7,8 @@ infix fun <T> InheritableTable<T>.child(table: InheritableTable<T>) = addChild(t
 
 fun <T> InheritableTable<T>.children(vararg table: InheritableTable<T>) = table.forEach(::addChild)
 
+interface TableVisitor<T> { val table: T }
+
 infix fun <T : Any> MutableTable<T>.lazy(code: () -> T) =
     LazyTableDelegate(this, code)
 
