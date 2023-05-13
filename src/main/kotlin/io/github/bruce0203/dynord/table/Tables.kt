@@ -36,4 +36,10 @@ open class NodeTable<E : Any>(defaultGet: () -> E? = { null }) : SafeTable<E>(de
         fastFirstOrNull { child -> child.getFromOnlyNode(key) }
             ?: fastFirstOrNull { child -> child.getFromChildren(key) }
     }
+
+    override fun getFromSkippedNode(key: Any, depth: Int): E? {
+        var v: CompositeTable<E> = this
+        for (i in 0 until depth) { v = v.getChildren()[0] }
+        return v.getOrNull(key)
+    }
 }
