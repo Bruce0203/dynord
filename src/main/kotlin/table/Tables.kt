@@ -7,6 +7,7 @@ import util.newSafeMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 open class SafeTable<E : Any>(val defaultGet: () -> E? = { null }) : MutableTable<E> {
+    companion object { private const val serialVersionUID = -7390903873381167900L }
 
     protected val elements: ConcurrentLinkedHashMap<Any, E> = newSafeMap()
 
@@ -19,6 +20,7 @@ open class SafeTable<E : Any>(val defaultGet: () -> E? = { null }) : MutableTabl
 }
 
 open class NodeTable<E : Any>(defaultGet: () -> E? = { null }) : SafeTable<E>(defaultGet), InheritableTable<E> {
+    companion object { private const val serialVersionUID = -1390903873381167909L }
 
     private val children: CopyOnWriteArrayList<InheritableTable<E>> = newSafeList()
 

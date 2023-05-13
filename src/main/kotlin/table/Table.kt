@@ -1,6 +1,8 @@
 package table
 
-interface Table<T> {
+import java.io.Serializable
+
+interface Table<T : Any> : Serializable {
 
     operator fun get(key: Any): T
 
@@ -10,13 +12,13 @@ interface Table<T> {
 
 }
 
-interface MutableTable<E> : Table<E> {
+interface MutableTable<E : Any> : Table<E> {
 
     operator fun set(key: Any, newValue: E)
 
 }
 
-interface InheritableTable<T> : Table<T> {
+interface InheritableTable<T : Any> : Table<T> {
 
     fun getFromChildren(key: Any): T?
 
