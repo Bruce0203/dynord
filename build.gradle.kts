@@ -15,11 +15,6 @@ val koin_version: String by project
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("org.prevayler:prevayler-core:2.6")
-    implementation("org.prevayler:prevayler-factory:2.6")
-//    implementation("com.github.ben-manes.caffeine:caffeine:3.1.5")
-//    testImplementation("com.github.ben-manes.caffeine:caffeine:3.1.5")
-//    implementation("com.sksamuel.aedile:aedile-core:1.2.0")
     testImplementation(kotlin("reflect"))
     compileOnly("io.insert-koin:koin-core:$koin_version")
     testCompileOnly("io.insert-koin:koin-core:$koin_version")
