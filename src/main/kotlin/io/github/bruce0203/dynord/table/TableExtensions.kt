@@ -19,8 +19,7 @@ interface TableVisitor<T> : Serializable {
     val table: T
 }
 
-infix fun <T : Any> MutableTable<T>.lazy(code: () -> T) =
-    LazyTableDelegate(this, code)
+infix fun <T : Any> MutableTable<T>.lazy(code: () -> T) = LazyTableDelegate(this, code)
 
 infix fun <T, R> TableVisitor<T>.to(code: (T) -> R): R = code(table)
 
