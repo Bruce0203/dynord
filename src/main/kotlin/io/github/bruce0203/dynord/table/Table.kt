@@ -18,14 +18,14 @@ interface MutableTable<E : Any> : Table<E> {
 
 }
 
-interface InheritableTable<T : Any> : Table<T> {
+interface CompositeTable<T : Any> : Table<T> {
 
     fun getFromChildren(key: Any): T?
 
     fun getFromOnlyNode(key: Any): T?
 
-    fun addChild(child: InheritableTable<T>)
+    fun addChild(child: CompositeTable<T>)
 
-    fun getChildren(): List<InheritableTable<T>>
+    fun getChildren(): List<CompositeTable<T>>
 
 }

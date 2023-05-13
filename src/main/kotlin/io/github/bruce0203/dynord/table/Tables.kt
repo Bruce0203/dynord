@@ -19,16 +19,16 @@ open class SafeTable<E : Any>(val defaultGet: () -> E? = { null }) : MutableTabl
     override fun getAll(): Collection<E> = elements.values
 }
 
-open class NodeTable<E : Any>(defaultGet: () -> E? = { null }) : SafeTable<E>(defaultGet), InheritableTable<E> {
+open class NodeTable<E : Any>(defaultGet: () -> E? = { null }) : SafeTable<E>(defaultGet), CompositeTable<E> {
     companion object { private const val serialVersionUID = -1390903873381167909L }
 
-    private val children: FastArrayList<InheritableTable<E>> = FastArrayList()
+    private val children: FastArrayList<CompositeTable<E>> = FastArrayList()
 
     override fun getFromOnlyNode(key: Any): E? = elements[key]
 
-    override fun getChildren(): List<InheritableTable<E>> = children
+    override fun getChildren(): List<CompositeTable<E>> = children
 
-    override fun addChild(child: InheritableTable<E>) { children.add(child) }
+    override fun addChild(child: CompositeTable<E>) { children.add(child) }
 
     override fun getOrNull(key: Any): E? = getFromOnlyNode(key) ?: getFromChildren(key)
 

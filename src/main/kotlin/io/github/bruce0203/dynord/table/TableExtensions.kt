@@ -9,9 +9,9 @@ typealias Entity = TableVisitor<Row>
 
 infix fun <T1, T2 : Table<T3>, T3> T2.to(code: (T2) -> T1): T1 = code(this)
 
-infix fun <T : Any> InheritableTable<T>.child(table: InheritableTable<T>) = addChild(table)
+infix fun <T : Any> CompositeTable<T>.child(table: CompositeTable<T>) = addChild(table)
 
-fun <T : Any> InheritableTable<T>.children(vararg table: InheritableTable<T>) = table.forEach(::addChild)
+fun <T : Any> CompositeTable<T>.children(vararg table: CompositeTable<T>) = table.forEach(::addChild)
 
 interface TableVisitor<T> : Serializable {
     companion object { private const val serialVersionUID = -1390903873381165909L }
