@@ -12,6 +12,8 @@ interface Table<T : Any> : Serializable {
 
 interface MutableTable<E : Any> : Table<E> {
     operator fun set(key: Any, newValue: E)
+
+    fun remove(key: Any): E?
 }
 
 interface CompositeTable<T : Any> : Table<T> {
@@ -24,8 +26,4 @@ interface CompositeTable<T : Any> : Table<T> {
     fun getChildren(): List<CompositeTable<T>>
 
     fun getFromSkippedNode(key: Any, depth: Int): T?
-}
-
-interface TableVisitor<T> : Serializable {
-    val table: T
 }

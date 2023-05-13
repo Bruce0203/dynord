@@ -1,18 +1,51 @@
+import io.github.bruce0203.dynord.prevalent.prevalent
+import io.github.bruce0203.dynord.prevalent.save
 import io.github.bruce0203.dynord.table.*
-import kotlin.system.measureTimeMillis
+import io.github.bruce0203.dynord.table.Collections
+import java.util.*
+import kotlin.collections.HashSet
 
-class Game(override val table: Row) : Entity {
-    var joinedPlayers: MutableList<Any> by table lazy { listOf("asdf") }
+interface Elemental<C> {
+    var joined: C
+}
+interface Containable<E> {
+    var joinedPlayers: HashSet<E>
 }
 
-val games = Collections(::Row) facade::Game
+class GamePlayer(table: Row) : Entity(table), Elemental<Game> {
+    companion object { const val serialVersionUID = 149857934791L }
+    override var joined: Game by table
+}
+class Game(table: Row) : Entity(table), Containable<GamePlayer> {
+    companion object { const val serialVersionUID = 149857934791L }
+    override var joinedPlayers: HashSet<GamePlayer> by table lazy { HashSet<GamePlayer>() }
+}
+
+val games by prevalent(Collections() facade ::Game)
+val gamePlayers by prevalent(Collections() facade ::GamePlayer)
+
+fun joinGame(uuid: UUID, game: Game) {
+    val player = GamePlayer(Row())
+    player.joined = game
+    gamePlayers[uuid] = player
+    game.joinedPlayers.add(player)
+}
+
+fun leftGame(uuid: UUID) {
+    gamePlayers.remove(uuid)
+}
+
+fun createNewGame(): Game = Game(Row()).also { games[Any().hashCode()] = it }
 
 fun main() {
-    repeat(10000) { games[Any().hashCode()] }
-    games[1]
-    repeat(100) {
-        println(measureTimeMillis {
-            repeat(1000) { games[1].joinedPlayers }
-        })
+    repeat (100){
+        val game = createNewGame()
+        val player = UUID.randomUUID()
+        joinGame(player, game)
+        println(games.getAll().size)
+        ::games.save()
+        ::gamePlayers.save()
     }
+
 }
+

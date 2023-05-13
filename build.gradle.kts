@@ -14,7 +14,11 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation(kotlin("reflect"))
     testImplementation(kotlin("reflect"))
+
+    implementation("org.prevayler:prevayler-core:2.6")
+    implementation("org.prevayler:prevayler-factory:2.6")
 
     implementation("com.google.guava:guava:31.1-jre")
 

@@ -2,7 +2,7 @@ package io.github.bruce0203.dynord.table
 
 open class TableFacade<T : Table<*>, V : Any>(
     protected open val table: Table<T>,
-    private val wrapper: (T) -> V,
+    protected open val wrapper: (T) -> V,
 )  : Table<V> {
     companion object { private const val serialVersionUID = -7390903879381167909L }
 
@@ -15,10 +15,12 @@ open class TableFacade<T : Table<*>, V : Any>(
 
 open class MutableTableFacade<T : MutableTable<*>, V : Any>(
     override val table: MutableTable<T>,
-    wrapper: (T) -> V,
+    override val wrapper: (T) -> V,
     private val getter: (V) -> T
 ) : TableFacade<T, V>(table, wrapper), MutableTable<V> {
     companion object { private const val serialVersionUID = -7390903873381167909L }
 
     override fun set(key: Any, newValue: V) { table[key] = newValue.run(getter) }
+    override fun remove(key: Any): V? = table.remove(key)?.run(wrapper)
+
 }

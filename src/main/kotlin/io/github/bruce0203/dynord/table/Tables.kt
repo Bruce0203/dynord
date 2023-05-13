@@ -12,6 +12,8 @@ open class SafeTable<E : Any>(val defaultGet: () -> E? = { null }) : MutableTabl
 
     override operator fun set(key: Any, newValue: E) { elements[key] = newValue }
 
+    override fun remove(key: Any): E? = elements.remove(key)
+
     override fun get(key: Any): E =
         getOrNull(key)?: defaultGet()?.apply { set(key, this) } ?: throw FastElementNotFoundException
 
