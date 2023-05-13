@@ -13,7 +13,8 @@ open class SafeTable<E : Any>(val defaultGet: () -> E? = { null }) : MutableTabl
 
     override operator fun set(key: Any, newValue: E) { elements[key] = newValue }
 
-    override fun get(key: Any): E = getOrNull(key)?: defaultGet()?: throw FastElementNotFoundException
+    override fun get(key: Any): E =
+        getOrNull(key)?: defaultGet()?.apply { set(key, this) } ?: throw FastElementNotFoundException
 
     override fun getOrNull(key: Any): E? = elements[key]
     override fun getAll(): Collection<E> = elements.values
