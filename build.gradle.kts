@@ -2,13 +2,15 @@ plugins {
     kotlin("jvm") version "1.8.21"
     application
     id("me.champeau.jmh") version "0.7.1"
+    `maven-publish`
 }
 
 group = "io.github.bruce0203"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
+    maven("https://repo.codemc.org/repository/maven-public") //bstats
 }
 
 dependencies {
@@ -33,3 +35,54 @@ application {
     mainClass.set("MainKt")
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            val githubRepository = System.getenv("GITHUB_REPOSITORY")
+            url = uri("https://maven.pkg.github.com/$githubRepository")
+            credentials {
+                username = System.getenv("GITHUB_REPOSITORY").split("/")[0]
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+tasks {
+    val sourcesJar by creating(Jar::class) {
+        archiveClassifier.set("sources")
+        from(sourceSets.main.get().allSource)
+    }
+
+    val javadocJar by creating(Jar::class) {
+        dependsOn.add(javadoc)
+        archiveClassifier.set("javadoc")
+        from(javadoc)
+    }
+
+    artifacts {
+        archives(sourcesJar)
+        archives(javadocJar)
+        archives(jar)
+    }
+}
+
+publishing {
+    publications {
+        register("gprRelease", MavenPublication::class) {
+            groupId = group as String
+            artifactId = project.name
+            version = project.version as String
+
+            from(components["java"])
+
+            pom {
+                packaging = "jar"
+                name.set(project.name)
+                description.set(project.name)
+            }
+
+        }
+    }
+}
