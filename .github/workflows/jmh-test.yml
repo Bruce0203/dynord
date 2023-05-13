@@ -1,6 +1,9 @@
 name: jmh test
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - test
 jobs:
   validate-changes:
     runs-on: ubuntu-latest
