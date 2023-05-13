@@ -4,8 +4,6 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureTimeMillis
 
-//TODO not only GET test, lets do SET test either please?
-
 val map = ConcurrentHashMap<Any, Any>()
 val random get() = UUID.randomUUID()!!
 

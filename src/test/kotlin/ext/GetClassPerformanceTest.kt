@@ -4,6 +4,10 @@ import kotlin.system.measureTimeMillis
 
 class GetClassPerformanceTest
 fun main() {
-    println(measureTimeMillis{ repeat(100) { GetClassPerformanceTest::class.simpleName } })
+    val obj = GetClassPerformanceTest()
+    repeat(100) { obj.javaClass.simpleName }
+    println(obj.hashCode())
+    println(GetClassPerformanceTest::class.java.hashCode())
+    println(measureTimeMillis{ repeat(100) { obj.javaClass.simpleName } })
 
 }
