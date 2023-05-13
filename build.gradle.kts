@@ -20,7 +20,6 @@ dependencies {
     testCompileOnly("io.insert-koin:koin-core:$koin_version")
 
     implementation("com.google.guava:guava:31.1-jre")
-    implementation("com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2")
 
     jmh("commons-io:commons-io:2.11.0")
     jmh("org.openjdk.jmh:jmh-core:0.9")

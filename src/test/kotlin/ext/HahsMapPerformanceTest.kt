@@ -1,17 +1,18 @@
 package ext
 
-import util.newSafeMap
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureTimeMillis
 
 //TODO not only GET test, lets do SET test either please?
 
-val map = newSafeMap<Any, String>()
-lateinit var lastRandom: Any
-val random get() = UUID.randomUUID().toString().apply { lastRandom = this }
+val map = ConcurrentHashMap<Any, Any>()
+val random get() = UUID.randomUUID()!!
 
 fun main() {
-    repeat(100000) { map[random] = random }
-    val map1 = (0..100000).map { random }
-    println(measureTimeMillis { map1.forEach { if (map[it] !== null) throw Exception("Wrong!") } })
+    val times = 100_000
+    repeat(1000000) { map[Any().hashCode()] = Any().hashCode() }
+    println(measureTimeMillis{ repeat(times){ map[Any().hashCode()] = Any().hashCode() } })
+    val generatedRandoms = (0..times).map { random }
+    println(measureTimeMillis { generatedRandoms.forEach { if (map[it] !== null) throw Exception("Wrong!") } })
 }
