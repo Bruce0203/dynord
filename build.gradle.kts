@@ -10,7 +10,6 @@ version = "1.0"
 
 repositories {
     mavenCentral()
-    maven("https://repo.codemc.org/repository/maven-public") //bstats
 }
 
 dependencies {
