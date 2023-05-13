@@ -24,5 +24,5 @@ infix fun <T : Any> MutableTable<T>.lazy(code: () -> T) =
 
 infix fun <T, R> TableVisitor<T>.to(code: (T) -> R): R = code(table)
 
-infix fun <A : MutableTable<T>, T : MutableTable<*>, V : TableVisitor<T>> A.facade(code: (T) -> V) =
-    MutableTableFacade(this, code) { it.table }
+infix fun <A : MutableTable<T>, T : MutableTable<*>, V : TableVisitor<T>>
+        A.facade(code: (T) -> V) = MutableTableFacade(this, code) { it.table }

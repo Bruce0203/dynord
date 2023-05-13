@@ -33,6 +33,7 @@ open class NodeTable<E : Any>(defaultGet: () -> E? = { null }) : SafeTable<E>(de
     override fun getOrNull(key: Any): E? = getFromOnlyNode(key) ?: getFromChildren(key)
 
     override fun getFromChildren(key: Any): E? = children.run {
-        fastFirstOrNull { child -> child.getFromOnlyNode(key) } ?: fastFirstOrNull { child -> child.getFromChildren(key) }
+        fastFirstOrNull { child -> child.getFromOnlyNode(key) }
+            ?: fastFirstOrNull { child -> child.getFromChildren(key) }
     }
 }
