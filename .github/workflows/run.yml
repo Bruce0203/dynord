@@ -1,4 +1,4 @@
-name: run
+name: publish to GitHub source hosting
 on:
   push:
   workflow_dispatch:
