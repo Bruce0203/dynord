@@ -25,3 +25,7 @@ interface CompositeTable<T : Any> : Table<T> {
 
     fun getFromSkippedNode(key: Any, depth: Int): T?
 }
+
+interface TableVisitor<T> : Serializable {
+    val table: T
+}

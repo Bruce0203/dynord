@@ -13,12 +13,6 @@ infix fun <T : Any> CompositeTable<T>.child(table: CompositeTable<T>) = addChild
 
 fun <T : Any> CompositeTable<T>.children(vararg table: CompositeTable<T>) = table.forEach(::addChild)
 
-interface TableVisitor<T> : Serializable {
-    companion object { private const val serialVersionUID = -1390903873381165909L }
-
-    val table: T
-}
-
 infix fun <T : Any> MutableTable<T>.lazy(code: () -> T) = LazyTableDelegate(this, code)
 
 infix fun <T, R> TableVisitor<T>.to(code: (T) -> R): R = code(table)
