@@ -4,6 +4,8 @@ import util.newSafeMap
 import java.util.*
 import kotlin.system.measureTimeMillis
 
+//TODO not only GET test, lets do SET test either please?
+
 val map = newSafeMap<Any, String>()
 lateinit var lastRandom: Any
 val random get() = UUID.randomUUID().toString().apply { lastRandom = this }

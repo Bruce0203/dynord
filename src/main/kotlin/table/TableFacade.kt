@@ -1,8 +1,5 @@
 package table
 
-typealias CollectionTable = NodeTable<RowTable>
-typealias RowTable = NodeTable<Any>
-
 open class TableFacade<T : Table<*>, V : Any>(
     protected open val table: Table<T>,
     private val wrapper: (T) -> V,

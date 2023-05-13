@@ -1,22 +1,18 @@
-import serialize.deserialize
-import serialize.serialize
 import table.*
-import java.io.File
+import kotlin.system.measureTimeMillis
 
-
-class Game(override val table: RowTable) : TableVisitor<RowTable> {
+class Game(override val table: Row) : Entity {
     var joinedPlayers: MutableList<Any> by table lazy { listOf("asdf") }
 }
 
-val games = CollectionTable(::NodeTable) facade::Game
+val games = Collections(::Row) facade::Game
 
 fun main() {
-    val sam = games["Sam"]
-    sam.joinedPlayers = mutableListOf("af")
-    println(games["Sam"].joinedPlayers)
-    val file = File("test.txt")
-    games["Sam"].joinedPlayers
-    serialize(games, file)
-    val games = deserialize<MutableTableFacade<CollectionTable, Game>>(file)
-    println(games["Sam"].joinedPlayers)
+    repeat(10000) { games[Any().hashCode()] }
+    games[1]
+    repeat(100) {
+        println(measureTimeMillis {
+            repeat(1000) { games[1].joinedPlayers }
+        })
+    }
 }

@@ -12,43 +12,42 @@ import kotlin.collections.ArrayList
 @Suppress("unused")
 open class TablePerformanceTest {
 
-    data class GamePlayer(override val table: RowTable) : TableVisitor<RowTable> {
+    data class GamePlayer(override val table: Row) : Entity {
         var joined: Game by table
     }
 
-    data class Game(override val table: RowTable) : TableVisitor<RowTable> {
-        var joinedPlayers: MutableList<GamePlayer> by table lazy { ArrayList<GamePlayer>() }
+    data class Game(override val table: Row) : Entity {
+        var joinedPlayers: List<GamePlayer> by table lazy { ArrayList<GamePlayer>() }
     }
 
-    private val games = CollectionTable() dummy::RowTable facade::Game
-    private val gamePlayers = CollectionTable() dummy::RowTable facade::GamePlayer
+    private val games = Collections() facade::Game
+    private val gamePlayers = Collections() facade::GamePlayer
+    private val gameKey = 1
+    private val game = Game(Row()).apply { games[gameKey] = this }
+    private val singletonList = emptyList<GamePlayer>()
 
-    init {
-        gamePlayers["Jimmy"] = GamePlayer(RowTable())
-        games["Jimmy"] = Game(RowTable())
-    }
-    private val game = games["Jimmy"]
-    private val emptyList = ArrayList<GamePlayer>()
-
-
-    private infix fun <T : MutableTable<E>, E> T.dummy(block: () -> E) = apply {
-        repeat(100) { (set(UUID.randomUUID(), block())) }
+    @Fork(value = 1, warmups = 1)
+    @Benchmark
+    fun setNewRow() {
+        games[Any().hashCode()] = Game(Row())
     }
 
     @Fork(value = 1, warmups = 1)
     @Benchmark
-    fun genVisitorAndReferProps() {
-        val gamePlayer = gamePlayers["Jimmy"]
-        gamePlayer.joined = game
-        gamePlayer.joined
+    fun getOrNullEntity() {
+        games.getOrNull(Any().hashCode())
     }
 
     @Fork(value = 1, warmups = 1)
     @Benchmark
-    fun genVisitorAndReferLazyProps() {
-        val games = games["Jimmy"]
-        games.joinedPlayers = emptyList
-        games.joinedPlayers
+    fun getProp() {
+        game.joinedPlayers
+    }
+
+    @Fork(value = 1, warmups = 1)
+    @Benchmark
+    fun setProp() {
+        game.joinedPlayers = singletonList
     }
 
 }

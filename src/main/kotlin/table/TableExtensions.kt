@@ -3,6 +3,10 @@ package table
 
 import java.io.Serializable
 
+typealias Collections = NodeTable<Row>
+typealias Row = NodeTable<Any>
+typealias Entity = TableVisitor<Row>
+
 infix fun <T1, T2 : Table<T3>, T3> T2.to(code: (T2) -> T1): T1 = code(this)
 
 infix fun <T : Any> InheritableTable<T>.child(table: InheritableTable<T>) = addChild(table)
