@@ -1,4 +1,4 @@
-package table
+package io.github.bruce0203.dynord.table
 
 import kotlin.reflect.KProperty
 

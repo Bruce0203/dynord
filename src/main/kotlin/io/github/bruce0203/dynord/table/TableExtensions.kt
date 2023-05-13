@@ -1,5 +1,5 @@
 @file:Suppress("unused")
-package table
+package io.github.bruce0203.dynord.table
 
 import java.io.Serializable
 

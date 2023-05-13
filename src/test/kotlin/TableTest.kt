@@ -1,4 +1,4 @@
-import table.*
+import io.github.bruce0203.dynord.table.*
 import kotlin.system.measureTimeMillis
 
 class Game(override val table: Row) : Entity {

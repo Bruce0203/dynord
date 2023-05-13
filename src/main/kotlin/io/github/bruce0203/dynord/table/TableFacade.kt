@@ -1,4 +1,4 @@
-package table
+package io.github.bruce0203.dynord.table
 
 open class TableFacade<T : Table<*>, V : Any>(
     protected open val table: Table<T>,

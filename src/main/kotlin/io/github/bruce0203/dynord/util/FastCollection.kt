@@ -1,4 +1,4 @@
-package util
+package io.github.bruce0203.dynord.util
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList

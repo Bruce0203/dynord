@@ -1,4 +1,5 @@
-package util
+@file:Suppress("unused")
+package io.github.bruce0203.dynord.util
 
 inline fun <T> List<T>.fastForEach(callback: (T) -> Unit) {
     var n = 0

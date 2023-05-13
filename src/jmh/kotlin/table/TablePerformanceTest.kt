@@ -1,5 +1,7 @@
 package table
 
+import io.github.bruce0203.dynord.table.*
+import io.github.bruce0203.dynord.table.Collections
 import org.openjdk.jmh.annotations.*
 import table.*
 import java.util.*

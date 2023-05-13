@@ -1,4 +1,4 @@
-package util
+package io.github.bruce0203.dynord.util
 
 /**
  * fast throwing for performance - skip stacktrace generation

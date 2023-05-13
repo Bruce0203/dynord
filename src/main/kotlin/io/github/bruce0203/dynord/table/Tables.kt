@@ -1,6 +1,9 @@
-package table
+package io.github.bruce0203.dynord.table
 
-import util.*
+import io.github.bruce0203.dynord.util.FastArrayList
+import io.github.bruce0203.dynord.util.FastElementNotFoundException
+import io.github.bruce0203.dynord.util.FastHashMap
+import io.github.bruce0203.dynord.util.fastFirstOrNull
 
 open class SafeTable<E : Any>(val defaultGet: () -> E? = { null }) : MutableTable<E> {
     companion object { private const val serialVersionUID = -7390903873381167900L }

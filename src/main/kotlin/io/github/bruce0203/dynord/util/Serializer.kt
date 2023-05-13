@@ -1,5 +1,5 @@
 @file:Suppress("unused")
-package util
+package io.github.bruce0203.dynord.util
 
 import java.io.*
 
