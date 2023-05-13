@@ -4,11 +4,11 @@ import kotlin.reflect.KProperty
 
 @Suppress("UNCHECKED_CAST")
 operator fun <R : Any> Table<*>.getValue(thisRef: Any?, property: KProperty<*>): R {
-    return this[property] as R
+    return this[property.hashCode()] as R
 }
 
 operator fun <R : Any> MutableTable<R>.setValue(thisRef: Any?, property: KProperty<*>, value: R) {
-    this[property] = value
+    this[property.hashCode()] = value
 }
 
 class LazyTableDelegate<T : Any>(
@@ -19,7 +19,7 @@ class LazyTableDelegate<T : Any>(
 
     @Suppress("UNCHECKED_CAST")
     operator fun <R> getValue(thisRef: Any?, property: KProperty<*>): R {
-        val getOrNull = getOrNull(property)
-        return (getOrNull ?: code.invoke().also { this[property] = it }) as R
+        val getOrNull = getOrNull(property.hashCode())
+        return (getOrNull ?: code.invoke().also { this[property.hashCode()] = it }) as R
     }
 }

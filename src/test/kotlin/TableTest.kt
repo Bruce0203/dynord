@@ -1,13 +1,22 @@
+import serialize.deserialize
+import serialize.serialize
 import table.*
+import java.io.File
 
 
 class Game(override val table: RowTable) : TableVisitor<RowTable> {
-    var joinedPlayers: List<String> by table lazy { listOf("asdf") }
+    var joinedPlayers: MutableList<Any> by table lazy { listOf("asdf") }
 }
+
 val games = CollectionTable(::NodeTable) facade::Game
 
 fun main() {
     val sam = games["Sam"]
-    sam.joinedPlayers = listOf("a")
-    println(sam.joinedPlayers)
+    sam.joinedPlayers = mutableListOf("af")
+    println(games["Sam"].joinedPlayers)
+    val file = File("test.txt")
+    games["Sam"].joinedPlayers
+    serialize(games, file)
+    val games = deserialize<MutableTableFacade<CollectionTable, Game>>(file)
+    println(games["Sam"].joinedPlayers)
 }
