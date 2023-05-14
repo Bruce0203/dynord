@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "unused_parameter")
 package io.github.bruce0203.dynord.table
 
 infix fun <T1, T2 : Table<T3>, T3> T2.to(code: (T2) -> T1): T1 = code(this)
@@ -8,7 +8,11 @@ infix fun <T3 : Any, T : CompositeTable<T3>, T2 : CompositeTableFacade<T, *>> T2
 
 fun <T : Any> CompositeTable<T>.children(vararg table: CompositeTable<T>) = table.forEach(::addChild)
 
-infix fun <T : Any> MutableTable<T>.lazy(code: () -> T) = LazyTableDelegate(this, code)
+infix fun <A, T : Any, V : T> MutableTable<T>.value(code: (A) -> V) =
+    MutableTableDelegate<T, V>(this)
+infix fun <T : Any, V : T> MutableTable<T>.lazy(code: () -> V) = LazyTableDelegate(this, code)
+infix fun <T : Any, V : T> CompositeTable<T>.depth(depth: Int) =
+    ForcedDepthTableDelegate(depth, this)
 
 infix fun <T, R> TableVisitor<T>.to(code: (T) -> R): R = code(table)
 

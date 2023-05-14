@@ -9,7 +9,9 @@ interface TableVisitor<T> : Serializable {
     val table: T
 }
 
-open class Entity(override val table: Row) : TableVisitor<Row> {
+open class Entity(final override val table: Row) : TableVisitor<Row> {
+    companion object { private const val serialVersionUID = -7649264725592047328L }
+
     override fun hashCode(): Int {
         return table.hashCode()
     }

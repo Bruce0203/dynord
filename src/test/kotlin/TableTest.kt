@@ -1,28 +1,26 @@
 import io.github.bruce0203.dynord.prevalent.prevalent
+import io.github.bruce0203.dynord.prevalent.save
 import io.github.bruce0203.dynord.table.*
 import io.github.bruce0203.dynord.table.Collections
 import java.util.*
+import kotlin.collections.HashSet
 
-interface Elemental<C> {
-    var joined: C
-}
-interface Containable<E> {
-    var joinedPlayers: HashSet<E>
-}
-
-class GamePlayer(table: Row) : Entity(table), Elemental<Game> {
+class GamePlayer(table: Row) : Entity(table) {
     companion object { const val serialVersionUID = 8463017483753869000L }
-    override var joined: Game by table
-    var isPlaying: Boolean by table lazy { false }
+
+    var joined by table value ::Game
+    var isPlaying by table lazy { false }
 }
-class Game(table: Row) : Entity(table), Containable<GamePlayer> {
+
+class Game(table: Row) : Entity(table) {
     companion object { const val serialVersionUID = 8463017483753869001L }
-    override var joinedPlayers: HashSet<GamePlayer> by table lazy { HashSet<GamePlayer>() }
-    var isPlaying: Boolean by table lazy { false }
+
+    val joinedPlayers by table lazy { HashSet<GamePlayer>() }
+    var isPlaying by table lazy { false }
 }
 
 open class Handler(table: Row) : Entity(table) {
-    var isEnabled: Boolean by table lazy { true }
+    var isEnabled by table depth(3) lazy { true }
 }
 
 class GameHandler(table: Row) : Handler(table) {
@@ -30,8 +28,8 @@ class GameHandler(table: Row) : Handler(table) {
 }
 
 val handlers = Collections() facade ::Handler
-val games by prevalent(Collections() facade::Game child handlers)
-val gamePlayers by prevalent(Collections() facade::GamePlayer child games)
+val games by prevalent { Collections() facade::Game child handlers }
+val gamePlayers by prevalent { Collections() facade::GamePlayer child games }
 
 fun joinGame(uuid: UUID, game: Game) {
     val player = GamePlayer(Row())
@@ -59,5 +57,8 @@ fun main() {
         joinGame(player, game)
         println((game to ::GameHandler).isEnabled)
     }
+    ::games.save()
+    ::gamePlayers.save()
+    println(games.getAll().first().table.getAll())
 }
 

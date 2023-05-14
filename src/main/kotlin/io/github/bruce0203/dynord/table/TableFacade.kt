@@ -35,6 +35,8 @@ open class NodeTableFacade<T : Any, V : Any, T2 : CompositeTable<T>>(
 
     override fun getFromSkippedNode(key: Any, depth: Int): V? = table.getFromSkippedNode(key, depth)?.run(wrapper)
 
+    override fun setToSkippedNode(key: Any, value: V, depth: Int) = table.setToSkippedNode(key, value.run(getter), depth)
+
     override fun getChildren(): List<CompositeTable<V>> = table.getChildren()
         .map { NodeTableFacade(it, wrapper, getter) }
 

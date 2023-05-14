@@ -26,4 +26,6 @@ interface CompositeTable<T : Any> : MutableTable<T> {
     fun getChildren(): List<CompositeTable<T>>
 
     fun getFromSkippedNode(key: Any, depth: Int): T?
+
+    fun setToSkippedNode(key: Any, value: T, depth: Int)
 }
