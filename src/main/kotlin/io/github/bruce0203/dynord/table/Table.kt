@@ -16,7 +16,7 @@ interface MutableTable<E : Any> : Table<E> {
     fun remove(key: Any): E?
 }
 
-interface CompositeTable<T : Any> : Table<T> {
+interface CompositeTable<T : Any> : MutableTable<T> {
     fun getFromChildren(key: Any): T?
 
     fun getFromOnlyNode(key: Any): T?
