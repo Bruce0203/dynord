@@ -14,11 +14,11 @@ import kotlin.collections.ArrayList
 @Suppress("unused")
 open class TablePerformanceTest {
 
-    data class GamePlayer(override val table: Row) : Entity {
-        var joined: Game by table
+    data class GamePlayer(override val table: Row) : TableVisitor<Row> {
+        var joined: Game by value()
     }
 
-    data class Game(override val table: Row) : Entity {
+    data class Game(override val table: Row) : TableVisitor<Row> {
         var joinedPlayers: List<GamePlayer> by table lazy { ArrayList<GamePlayer>() }
     }
 

@@ -5,5 +5,5 @@ pluginManagement {
     }
     
 }
-rootProject.name = "dynord"//"dynamic-receptor"
+rootProject.name = "dynord"//"dyn(amic-reception-rec)ord"
 
