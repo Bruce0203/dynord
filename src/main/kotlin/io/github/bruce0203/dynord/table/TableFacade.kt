@@ -9,8 +9,6 @@ open class MutableTableFacade<T : Any, V : Any, T2 : MutableTable<T>>(
     protected open val wrapper: (T) -> V,
     private val getter: (V) -> T
 )  : MutableTable<V>, TableFacade<T2, T> {
-    companion object { private const val serialVersionUID = -1234985791872903824L }
-
     override fun get(key: Any): V = table[key].run(wrapper)
 
     override fun getOrNull(key: Any): V? = table.getOrNull(key)?.run(wrapper)
@@ -27,8 +25,6 @@ open class NodeTableFacade<T : Any, V : Any, T2 : CompositeTable<T>>(
     override val wrapper: (T) -> V,
     private val getter: (V) -> T,
 ) : MutableTableFacade<T, V, T2>(table, wrapper, getter), CompositeTable<V>, CompositeTableFacade<T2, T> {
-    companion object { private const val serialVersionUID = 1234985791872903824L }
-
     override fun getFromChildren(key: Any): V? = table.getFromChildren(key)?.run(wrapper)
 
     override fun getFromOnlyNode(key: Any): V? = table.getFromOnlyNode(key)?.run(wrapper)

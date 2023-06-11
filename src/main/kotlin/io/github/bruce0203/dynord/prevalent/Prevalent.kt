@@ -9,9 +9,9 @@ import kotlin.reflect.jvm.isAccessible
 
 typealias PrevalentMap = HashMap<File, Prevayler<*>>
 object GlobalPrevalent {
-    val prevalent = PrevalentMap()
+    private val prevalent = PrevalentMap()
 
-    fun <T> newPrevalent(prevalent: T, directory: String) =
+    private fun <T> newPrevalent(prevalent: T, directory: String) =
         PrevaylerFactory<T>().apply {
             configurePrevalentSystem(prevalent)
             configurePrevalenceDirectory(directory)

@@ -5,25 +5,10 @@ import java.io.Serializable
 typealias Collections = NodeTable<Row>
 typealias Row = NodeTable<Any>
 
-interface TableVisitor<T> : Serializable {
+interface TableVisitor<T : CompositeTable<Any>> : Serializable {
     val table: T
-}
-
-open class Entity(final override val table: Row) : TableVisitor<Row> {
-    companion object { private const val serialVersionUID = -7649264725592047328L }
-
-    override fun hashCode(): Int {
-        return table.hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Entity
-
-        if (table != other.table) return false
-
-        return true
-    }
+    fun <T : Any> value() = TableDelegate<T>(table)
+    infix fun <A, T : Any> value(code: (A) -> T) = TableDelegate<T>(table)
+    infix fun <T : Any> lazy(code: () -> T) = LazyTableDelegate(table, code)
+    infix fun depth(depth: Int) = ForcedDepthTableDelegate<Any>(depth, table)
 }
